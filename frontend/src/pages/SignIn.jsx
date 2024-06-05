@@ -6,7 +6,9 @@ import {
   signInStart,
   signInSuccess,
   signInFailure,
+  signoutSuccess
 } from '../redux/user/userSlice';
+import { API } from '../components/API';
 // import OAuth from '../components/OAuth';
 
 export default function SignIn() {
@@ -24,7 +26,7 @@ export default function SignIn() {
     }
     try {
       dispatch(signInStart());
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch(`${API}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -37,6 +39,9 @@ export default function SignIn() {
       if (res.ok) {
         dispatch(signInSuccess(data));
         navigate('/');
+      }
+      else{
+        dispatch(signoutSuccess())
       }
     } catch (error) {
       dispatch(signInFailure(error.message));

@@ -8,6 +8,7 @@ import { store, persistor } from './redux/store.js';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import ThemeProvider from './components/ThemeProvider.jsx';
+import 'flowbite/dist/flowbite.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

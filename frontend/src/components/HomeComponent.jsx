@@ -1,5 +1,8 @@
 import React from "react";
 import './HomeComponent.css'
+import image1 from '../../public/image1.jpg';
+import image2 from '../../public/image2.jpg';
+import image3 from '../../public/image3.jpg';
 
 export default function HomeComponent () {
     return (
@@ -19,7 +22,7 @@ export default function HomeComponent () {
     <section id="about" className="py-12 bg-white">
         <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">About MedLocator</h2>
-            <p className="text-lg">MedLocator is your go-to solution for finding the nearest pharmacies that stock the medicine you need. Our easy-to-use platform ensures that you get the right medicine at the right time without any hassle.</p>
+            <p className="text-lg mx-[250px]">MedLocator is your go-to solution for finding the nearest pharmacies that stock the medicine you need. Our easy-to-use platform ensures that you get the right medicine at the right time without any hassle.</p>
         </div>
     </section>
 
@@ -47,8 +50,43 @@ export default function HomeComponent () {
         </div>
     </section>
 
+
+    <div className=" mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="md:flex">
+        <div className=" flex-1 justify-center items-center flex bg-blue-300 h-[300px]">
+          <img className="w-full h-full  " src={image1} alt="Pharmacy" />
+        </div>
+        <div className="p-8 flex-1">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Search Nearest Pharmacy with Medicine</h2>
+          <p className="text-gray-700 mb-4">
+            MedLocator helps you find the nearest pharmacies that stock the medicine you need. Our easy-to-use platform ensures that you get the right medicine at the right time without any hassle.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="h-20"></div>
+
+    <div className=" mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="md:flex">
+      <div className="p-8 flex-1">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Seamless Navigation to Nearby Pharmacies</h2>
+          <p className="text-gray-700 mb-4">
+          Discover the most convenient route to the nearest pharmacy from your current location with our interactive map feature. Effortlessly navigate and ensure you get the medicine you need quickly and efficiently.
+          </p>
+        </div>
+        <div className=" flex-1 justify-center items-center flex bg-blue-300 h-[300px]">
+          <img className="w-full h-full  " src={image3} alt="Pharmacy" />
+        </div>
+        
+      </div>
+    </div>
+
+
+        <div className="h-6"></div>
+
     {/* <!-- Contact Section --> */}
-    <section id="contact" className="py-12 bg-white">
+    <section id="contact" className="py-12 bg-gray-100">
         <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
             <p className="text-lg mb-6">If you have any questions or need support, feel free to reach out to us.</p>
