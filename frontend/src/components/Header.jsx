@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
 import { signoutSuccess } from '../redux/user/userSlice';
 import { useEffect, useState } from 'react';
+import { API } from '../components/API';
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -27,7 +28,7 @@ export default function Header() {
   const handleSignout = async () => {
     try {
       console.log(currentUser.message)
-      const res = await fetch('http://localhost:5000/api/user/logout', {
+      const res = await fetch(`${API}/api/user/logout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(currentUser.message),

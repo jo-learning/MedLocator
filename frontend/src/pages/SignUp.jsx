@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import MapComponent from '../components/Map';
 import { FaCheckCircle } from 'react-icons/fa';
+import { API } from '../components/API';
 // import OAuth from '../components/OAuth';
 
 export default function SignUp() {
@@ -33,7 +34,7 @@ export default function SignUp() {
       setErrorMessage(null);
       console.log(formData);
       
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch(`${API}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

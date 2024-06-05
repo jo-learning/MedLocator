@@ -3,6 +3,7 @@ import { Button } from 'flowbite-react';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateSuccess } from '../redux/user/userSlice';
+import { API } from '../components/API';
 
 export default function DashLocation () {
   const { currentUser } = useSelector((state) => state.user);
@@ -17,7 +18,7 @@ export default function DashLocation () {
                 latitude: location.lat,
                 longitude: location.lng
             }
-            const res = await fetch('http://localhost:5000/api/user/updateLocation', {
+            const res = await fetch(`${API}/api/user/updateLocation`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(update),

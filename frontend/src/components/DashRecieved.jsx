@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { HiDocumentAdd, HiOutlineExclamationCircle } from 'react-icons/hi';
 import MapComponent3 from './Map3';
+import { API } from '../components/API';
 
 
 // import { set } from 'mongoose';
@@ -89,7 +90,7 @@ export default function DashRecieved() {
     const fetchPosts = async () => {
       console.log('any thing')
       try {
-        const res = await fetch('http://localhost:5000/api/save/getSave', {
+        const res = await fetch(`${API}/api/save/getSave`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({token: currentUser.message.token, email: currentUser.message.email}),

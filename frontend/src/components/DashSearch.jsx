@@ -6,6 +6,7 @@ import MapComponent2 from "./Map2";
 import { useSelector } from "react-redux";
 import { HiDocumentText, HiOutlineUserGroup, HiArrowNarrowUp, HiAnnotation, HiArrowNarrowDown } from "react-icons/hi";
 import MapComponent3 from "./Map3";
+import { API } from '../components/API';
 // import { current } from "@reduxjs/toolkit";
 
 export default function DashSearch(){
@@ -58,7 +59,7 @@ export default function DashSearch(){
       try {
         // e.preventDefault();
         console.log({email: currentUser.message.email, medicine_name: medicine[number][0], latitude: medicine[number][1], longitude: medicine[number][2], pharmacy_name: medicine[number][5], token: currentUser.message.token  })
-        const res = await fetch('http://localhost:5000/api/save/addSave',{
+        const res = await fetch(`${API}/api/save/addSave`,{
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({email: currentUser.message.email, medicine_name: medicine[number][0], latitude: medicine[number][1], longitude: medicine[number][2], pharmacy_name: medicine[number][5], token: currentUser.message.token  })
@@ -79,7 +80,7 @@ export default function DashSearch(){
       try {
         e.preventDefault();
         console.log(searchTerm)
-        const res = await fetch('http://localhost:5000/api/medicine/search', {
+        const res = await fetch(`${API}/api/medicine/search`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({token:currentUser.message.token, searchTerm: searchTerm}),

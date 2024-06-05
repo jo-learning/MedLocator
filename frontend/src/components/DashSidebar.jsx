@@ -13,6 +13,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { signoutSuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { API } from '../components/API';
 
 export default function DashSidebar() {
   const location = useLocation();
@@ -41,7 +42,7 @@ export default function DashSidebar() {
   const handleSignout = async () => {
     try {
       console.log(currentUser)
-      const res = await fetch('http://localhost:5000/api/user/logout', {
+      const res = await fetch(`${API}/api/user/logout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(currentUser.message),
@@ -60,7 +61,7 @@ export default function DashSidebar() {
     <Sidebar className='w-full md:w-56'>
       <Sidebar.Items>
         <Sidebar.ItemGroup className='flex flex-col gap-1'>
-          {currentUser && currentUser.isAdmin && (
+          {/* {currentUser && currentUser.isAdmin && (
             <Link to='/dashboard?tab=dash'>
               <Sidebar.Item
                 active={tab === 'dash' || !tab}
@@ -82,7 +83,7 @@ export default function DashSidebar() {
                           Dashboard
                         </Sidebar.Item>
                       </Link>
-                    )}
+                    )} */}
 
           <Link to='/dashboard?tab=profile'>
             <Sidebar.Item
@@ -108,7 +109,7 @@ export default function DashSidebar() {
             </Link>
           )} */}
 
-          {currentUser.message.isAdmin && currentUser.message.role == 'pharmacy' && (
+          { currentUser.message.role == 'pharmacy' && (
             <Link to='/dashboard?tab=medicine'>
               <Sidebar.Item
                 active={tab === 'posts'}
@@ -132,7 +133,7 @@ export default function DashSidebar() {
               </Link>
             </>
           )}
-          {currentUser && !currentUser.isAdmin && (
+          {currentUser && currentUser.message.role == 'user' && (
             <>
               <Link to='/dashboard?tab=search'>
                 <Sidebar.Item

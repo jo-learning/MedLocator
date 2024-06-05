@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { HiDocumentAdd, HiOutlineExclamationCircle } from 'react-icons/hi';
+import { API } from '../components/API';
 
 
 // import { set } from 'mongoose';
@@ -73,7 +74,7 @@ export default function DashMedicine() {
       setErrorMessage(null);
       console.log(formData);
       
-      const res = await fetch('https://localhost:5000/api/auth/signup', {
+      const res = await fetch(`${API}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -97,7 +98,7 @@ export default function DashMedicine() {
     const fetchPosts = async () => {
       
       try {
-        const res = await fetch(`http://localhost:5000/api/medicine/addmedicine`,  {
+        const res = await fetch(`${API}/api/medicine/addmedicine`,  {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
@@ -124,7 +125,7 @@ export default function DashMedicine() {
     const fetchPosts = async () => {
       
       try {
-        const res = await fetch(`http://localhost:5000/api/medicine/updatemedicine`,  {
+        const res = await fetch(`${API}/api/medicine/updatemedicine`,  {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formMedicine),
@@ -132,7 +133,7 @@ export default function DashMedicine() {
         const data = await res.json();
         if (res.ok) {
           // setUserPosts(data.posts);
-          const res = await fetch(`http://localhost:5000/api/medicine/getmedicine`,  {
+          const res = await fetch(`${API}/api/medicine/getmedicine`,  {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(currentUser.message),
@@ -162,7 +163,7 @@ export default function DashMedicine() {
     setFormData({ ...formData, token: currentUser.message.token });
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/medicine/getmedicine`,  {
+        const res = await fetch(`${API}/api/medicine/getmedicine`,  {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(currentUser.message),
@@ -207,7 +208,7 @@ export default function DashMedicine() {
     setShowModal(false);
     try {
       const res = await fetch(
-        `http://localhost:5000/api/medicine/deletemedicine/${medicineIdToDelete}/${currentUser.message.token}`,
+        `${API}/api/medicine/deletemedicine/${medicineIdToDelete}/${currentUser.message.token}`,
         {
           method: 'DELETE',
         }
@@ -220,7 +221,7 @@ export default function DashMedicine() {
         // setUserPosts((prev) =>
         //   prev.filter((post) => post._id !== postIdToDelete)
         // );
-        const res = await fetch(`http://localhost:5000/api/medicine/getmedicine`,  {
+        const res = await fetch(`${API}/api/medicine/getmedicine`,  {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(currentUser.message),
