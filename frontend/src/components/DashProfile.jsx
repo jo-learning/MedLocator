@@ -24,19 +24,19 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 
 export default function DashProfile() {
-  // const { currentUser, error, loading } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
 //   const { currentUser, setCurrentUser } = useState({
 //     _id: "11223344",
 //     username: "yohannes",
 //     email: "yohannesguesh01@gmail.com",
 //     isAdmin: true
 // }) 
-const currentUser = {
-  _id: "11223344",
-    username: "yohannes",
-    email: "yohannesguesh01@gmail.com",
-    isAdmin: true
-}
+// const currentUser = {
+//   _id: "11223344",
+//     username: "yohannes",
+//     email: "yohannesguesh01@gmail.com",
+//     isAdmin: true
+// }
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
@@ -59,13 +59,13 @@ const currentUser = {
     if (imageFile) {
       uploadImage();
     }
-    fetch('/currentUser.json')
-      .then(response => response.json())
-      .then(data => {
-        currentUser = data
-        console.log(data)
-      })
-      .catch(error => console.error('Error fetching data:', error));
+    // fetch('/currentUser.json')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     currentUser = data
+    //     console.log(data)
+    //   })
+    //   .catch(error => console.error('Error fetching data:', error));
   }, [imageFile]);
 
   const uploadImage = async () => {
@@ -130,7 +130,7 @@ const currentUser = {
     }
     try {
       dispatch(updateStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`/api/user/update/${currentUser.message.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ const currentUser = {
     setShowModal(false);
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`/api/user/delete/${currentUser.message.id}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -236,14 +236,14 @@ const currentUser = {
           type='text'
           id='username'
           placeholder='username'
-          defaultValue={currentUser.username}
+          defaultValue={currentUser.message.name}
           onChange={handleChange}
         />
         <TextInput
           type='email'
           id='email'
           placeholder='email'
-          defaultValue={currentUser.email}
+          defaultValue={currentUser.message.email}
           onChange={handleChange}
         />
         <TextInput
@@ -260,7 +260,7 @@ const currentUser = {
         >
           {loading ? 'Loading...' : 'Update'}
         </Button> */}
-        {currentUser.isAdmin && (
+        {/* {currentUser.message.isAdmin && (
           <Link to={'/create-post'}>
             <Button
               type='button'
@@ -270,8 +270,8 @@ const currentUser = {
               Create a post
             </Button>
           </Link>
-        )}
-        {currentUser.isAdmin && (
+        )} */}
+        {/* {currentUser.isAdmin && (
           <Link to={'/create-shop'}>
             <Button
               type='button'
@@ -281,7 +281,7 @@ const currentUser = {
               Create a shop
             </Button>
           </Link>
-        )}
+        )} */}
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
         <span onClick={() => setShowModal(true)} className='cursor-pointer'>

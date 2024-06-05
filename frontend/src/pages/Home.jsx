@@ -11,14 +11,14 @@ export default function Home () {
     console.log(location)
     return (
         <>
-            <Header />
             <HomeComponent />
-            <HomeComponent />
-            <HomeComponent />
-            <HomeComponent />
+            
             <div className='h-8'></div>
+            <div className='flex justify-center items-center'>
             <MapComponent setLocation={setLocation}/>
-            <Footer />
+            </div>
+            <div className='h-8'></div>
+
         </>
     );
 }

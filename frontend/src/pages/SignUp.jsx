@@ -33,7 +33,7 @@ export default function SignUp() {
       setErrorMessage(null);
       console.log(formData);
       
-      const res = await fetch('https://localhost:5000/api/auth/register', {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -132,7 +132,7 @@ export default function SignUp() {
         show={openModal}
         position={modalPlacement}
         onClose={() => setOpenModal(false)}
-        className='lg:my-[100px] lg:mx-[300px] bg-black'
+        // className='lg:my-[100px] lg:mx-[300px] bg-black'
       >
         <Modal.Header>Small modal</Modal.Header>
         <Modal.Body>
@@ -141,9 +141,10 @@ export default function SignUp() {
         <Modal.Footer>
           <Button onClick={() => {
             setOpenModal(false)
-            var locations = location.lat + ' ' + location.lng;
+            // var locations = location.lat + ' ' + location.lng;
+
             setCheck(true);
-            setFormData({ ...formData, location: locations });
+            setFormData({ ...formData, longitude: parseInt(location.lng), latitude: location.lat });
           }}>I accept</Button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Decline

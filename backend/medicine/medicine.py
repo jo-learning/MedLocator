@@ -6,12 +6,14 @@ import bcrypt
 
 
 class Medicine:
-    def __init__(self, id, name, role, email, location, hashed_password):
+    def __init__(self, id, name, role, email, longitude, latitude, hashed_password):
         self.id = id
         self.name = name
         self.role = role
         self.email = email
-        self.location = location
+        # self.location = location
+        self.longitude = longitude
+        self.latitude = latitude
         self.hashed_password = hashed_password
 
     @classmethod
@@ -28,9 +30,9 @@ class Medicine:
 
     @classmethod
     def from_db_row(cls, db_row):
-        id, name, role, email, location, hashed_password = db_row
+        id, name, role, email, longitude, latitude, hashed_password = db_row
         # return cls(id, LanguageString.from_id(name), role, email, hashed_password.encode())
-        return cls(id, name, role, email, location, hashed_password.encode())
+        return cls(id, name, role, email, longitude, latitude, hashed_password.encode())
 
     def reset_password(self, new_password):
         db.update_password(self.id, new_password)
@@ -45,7 +47,7 @@ class Medicine:
             "name": self.name,
             "role": self.role,
             "email": self.email,
-            "clinic_id": self.location,
+            "clinic_id": self.longitude,
         }
 
     def create_token(self):

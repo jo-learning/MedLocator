@@ -9,13 +9,13 @@ import { HiDocumentAdd, HiOutlineExclamationCircle } from 'react-icons/hi';
 // import { set } from 'mongoose';
 
 export default function DashMedicine() {
-  // const { currentUser } = useSelector((state) => state.user);
-  const currentUser = {
-    _id: "11223344",
-      username: "yohannes",
-      email: "yohannesguesh01@gmail.com",
-      isAdmin: true
-  }
+  const { currentUser } = useSelector((state) => state.user);
+  // const currentUser = {
+  //   _id: "11223344",
+  //     username: "yohannes",
+  //     email: "yohannesguesh01@gmail.com",
+  //     isAdmin: true
+  // }
   // const [userPosts, setUserPosts] = useState([]);
   const userPosts = [{
     updatedAt: "24-20-2014",
@@ -39,19 +39,28 @@ export default function DashMedicine() {
 
   }
 ]
+  const [medicine, setMedicine] = useState([]);
+
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [detail, setDetail] = useState(false);
-  const [postIdToDelete, setPostIdToDelete] = useState('');
+  const [medicineIdToDelete, setMedicineIdToDelete] = useState();
   const [formData, setFormData] = useState({});
+  const [formMedicine, setFormMedicine] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
+  const [editMedicine, setEditMedicine] = useState(false)
+  const [medicineIndex, setMedicineIndex] = useState(0)
 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
+  const handleMedicineChange = (e) => {
+    setFormMedicine({ ...formMedicine, [e.target.id]: e.target.value.trim() });
+
+  }
 
 
   const handleSubmit = async (e) => {
@@ -84,14 +93,20 @@ export default function DashMedicine() {
   };
 
 
-  useEffect(() => {
+  const handleAdd = async() => {
     const fetchPosts = async () => {
+      
       try {
-        const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
+        const res = await fetch(`http://localhost:5000/api/medicine/addmedicine`,  {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
         const data = await res.json();
         if (res.ok) {
           // setUserPosts(data.posts);
-          if (data.posts.length < 9) {
+          console.log(data)
+          if (data.length < 9) {
             setShowMore(false);
           }
         }
@@ -99,10 +114,76 @@ export default function DashMedicine() {
         console.log(error.message);
       }
     };
-    if (currentUser.isAdmin) {
+    fetchPosts();
+  }
+
+
+
+  const handleUpdate = () => {
+    console.log(formMedicine)
+    const fetchPosts = async () => {
+      
+      try {
+        const res = await fetch(`http://localhost:5000/api/medicine/updatemedicine`,  {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formMedicine),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          // setUserPosts(data.posts);
+          const res = await fetch(`http://localhost:5000/api/medicine/getmedicine`,  {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(currentUser.message),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          // setUserPosts(data.posts);
+          console.log(data)
+          setMedicine(data)
+          if (data.length < 9) {
+            setShowMore(false);
+          }
+        }
+          console.log(data)
+          if (data.length < 9) {
+            setShowMore(false);
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchPosts();
+  }
+
+  useEffect(() => {
+    setFormData({ ...formData, token: currentUser.message.token });
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/api/medicine/getmedicine`,  {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(currentUser.message),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          // setUserPosts(data.posts);
+          console.log(data)
+          setMedicine(data)
+          if (data.length < 9) {
+            setShowMore(false);
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    if (currentUser.message.isAdmin) {
       fetchPosts();
     }
-  }, [currentUser._id]);
+  }, [currentUser.message.id]);
 
   const handleShowMore = async () => {
     const startIndex = userPosts.length;
@@ -126,11 +207,12 @@ export default function DashMedicine() {
     setShowModal(false);
     try {
       const res = await fetch(
-        `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
+        `http://localhost:5000/api/medicine/deletemedicine/${medicineIdToDelete}/${currentUser.message.token}`,
         {
           method: 'DELETE',
         }
       );
+      
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -138,7 +220,23 @@ export default function DashMedicine() {
         // setUserPosts((prev) =>
         //   prev.filter((post) => post._id !== postIdToDelete)
         // );
+        const res = await fetch(`http://localhost:5000/api/medicine/getmedicine`,  {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(currentUser.message),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          // setUserPosts(data.posts);
+          console.log(data)
+          setMedicine(data)
+          if (data.length < 9) {
+            setShowMore(false);
+          }
+        }
+        setMedicineIdToDelete(null)
       }
+
     } catch (error) {
       console.log(error.message);
     }
@@ -146,7 +244,7 @@ export default function DashMedicine() {
 
   return (
     <div className='mt-20 table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
-      {currentUser.isAdmin && userPosts.length > 0 ? (
+      {currentUser.message.isAdmin && medicine.length > 0 ? (
         <>
         <div className=' items-end justify-end flex'>
         <Button className='bg-red-500 right-0' onClick={() => (setDetail(true))}><HiDocumentAdd className='w-6 h-6' /> add medicine</Button>
@@ -154,23 +252,24 @@ export default function DashMedicine() {
         
           <table>
             <thead className='bg-white border-blue-400 border-solid rounded'>
-              <th>jo</th>
-              <th>jo</th>
-              <th>jo</th>
-              <th>jo</th>
-              <th>jo</th>
+              <th>name</th>
+              <th>total number</th>
+              <th>price</th>
+              <th>delete</th>
+              <th>edit</th>
             </thead>
-              {userPosts.map((post) => (
+              {medicine.map((post, index) => (
                 <tbody key={post._id}>
                   
-                    <td className='px-6'>{post.title}</td>
-                    <td className='px-6'>{post.category}</td>
-                    <td className='px-6'>{post.updatedAt}</td>
+                    <td className='px-6'>{post[1]}</td>
+                    <td className='px-6'>{post[2]}</td>
+                    <td className='px-6'>{post[3]}</td>
                     <td>
                     <span
                       onClick={() => {
                         setShowModal(true);
-                        setPostIdToDelete(post._id);
+                        setMedicineIdToDelete(post[0]);
+                        console.log(medicine[medicineIndex][2])
                       }}
                       className='font-medium text-red-500 hover:underline cursor-pointer px-6'
                     >
@@ -180,7 +279,12 @@ export default function DashMedicine() {
                     <td>
                     <Link
                       className='text-teal-500 hover:underline px-6'
-                      to={`/update-post/${post._id}`}
+                      onClick={() => {
+                        setMedicineIndex(index)
+                        setFormMedicine({ ...formMedicine, token: currentUser.message.token, medicine_id: post[0] });
+                        setEditMedicine(true)
+
+                      }}
                     >
                       <span>Edit</span>
                     </Link>
@@ -238,30 +342,34 @@ export default function DashMedicine() {
           
         <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
             <div>
-              <Label value='Your username' />
+              <Label value='Medicine' />
+              <Select defaultValue="Aspirin" onChange={(event) => {
+              // setModalPlacement(event.target.value)
+              setFormData({ ...formData, medicine: event.target.value });
+            }}>
+                <option value="Aspirin">Aspirin</option>
+                <option value="Paracetamol">Paracetamol</option>
+                <option value="Ibuprofen">Ibuprofen</option>
+                <option value="Amoxicillin">Amoxicillin</option>
+                <option value="Ciprofloxacin">Ciprofloxacin</option>
+                <option value="Metformin">Metformin</option>
+              </Select>
+            </div>
+            <div>
+              <Label value='Total Number' />
               <TextInput
-                type='text'
-                placeholder='Username'
-                id='name'
+                type='number'
+                placeholder='0'
+                id='totalnumber'
                 onChange={handleChange}
-                className='dark:text-black'
               />
             </div>
             <div>
-              <Label value='Your email' />
+              <Label value='Price' />
               <TextInput
-                type='email'
-                placeholder='name@company.com'
-                id='email'
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label value='Your password' />
-              <TextInput
-                type='password'
-                placeholder='Password'
-                id='password'
+                type='number'
+                placeholder='0.00'
+                id='price'
                 onChange={handleChange}
               />
             </div>
@@ -317,7 +425,89 @@ export default function DashMedicine() {
         <Modal.Footer>
           <Button onClick={() => {
             setDetail(false)
-          }}>I accept</Button>
+            handleAdd()
+          }} className='bg-green-500'>I accept</Button>
+          <Button color="gray" onClick={() => setDetail(false)}>
+            Decline
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+
+
+
+      <Modal
+        show={editMedicine}
+        position='center'
+        onClose={() => setEditMedicine(false)}
+        className='lg:my-[100px] lg:mx-[300px] bg-black'
+      >
+        <Modal.Header>Small modal</Modal.Header>
+        <Modal.Body>
+          
+        <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
+          { medicine[medicineIndex]  && (
+            <div>
+
+            <div>
+              <Label value='Total Number' />
+              <TextInput
+                type='number'
+                placeholder={medicine[medicineIndex][2]}
+                id='totalnumber'
+                // value={medicine[medicineIndex][2]}
+                onChange={handleMedicineChange}
+              />
+            </div>
+            <div>
+              <Label value='Price' />
+              <TextInput
+                type='number'
+                placeholder={medicine[medicineIndex][3]}
+                id='price'
+                onChange={handleMedicineChange}
+              />
+            </div>
+            </div>
+          )}
+            
+           
+            {/* <div>
+              <Label value='user type'></Label>
+            <Select defaultValue="user" onChange={(event) => {
+              setModalPlacement(event.target.value)
+              setFormData({ ...formData, role: event.target.value });
+            }}>
+            <option value="user">User</option>
+            <option value="pharmacy">Pharmacy</option>
+            
+          </Select>
+            </div> */}
+            
+              
+            
+            {/* <Button onClick={()=>{setShowPopup(true)}} className='ml-1 text-start bg-red-600'>
+              Subscription
+            </Button> */}
+            {/* {showPopup && <SubscriptionPopup onClose={() => setShowPopup(false)} />} */}
+            {/* <SubscriptionPopup /> */}
+            {/* <Button
+            className='bg-red-500'
+            onClick={() => {setDetail(true)}}
+            >
+              {Check == true && <span className='mr-2'><FaCheckCircle size={30} color="green" /></span>}
+              Add Location
+            </Button> */}
+          </form>
+
+
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => {
+            setDetail(false)
+            handleUpdate()
+          }} className='bg-green-500'>I accept</Button>
           <Button color="gray" onClick={() => setDetail(false)}>
             Decline
           </Button>

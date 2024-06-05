@@ -40,7 +40,7 @@ export default function DashSidebar() {
   }, [location.search]);
   const handleSignout = async () => {
     try {
-      console.log(currentUser.message)
+      console.log(currentUser)
       const res = await fetch('http://localhost:5000/api/user/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -60,7 +60,7 @@ export default function DashSidebar() {
     <Sidebar className='w-full md:w-56'>
       <Sidebar.Items>
         <Sidebar.ItemGroup className='flex flex-col gap-1'>
-          {currentUser.message && currentUser.message.isAdmin && (
+          {currentUser && currentUser.isAdmin && (
             <Link to='/dashboard?tab=dash'>
               <Sidebar.Item
                 active={tab === 'dash' || !tab}
@@ -71,6 +71,19 @@ export default function DashSidebar() {
               </Sidebar.Item>
             </Link>
           )}
+
+          {currentUser.message && !currentUser.message.isAdmin && (
+                      <Link to='/dashboard?tab=posts'>
+                        <Sidebar.Item
+                          active={tab === 'posts'}
+                          icon={HiChartPie}
+                          as='div'
+                        >
+                          Dashboard
+                        </Sidebar.Item>
+                      </Link>
+                    )}
+
           <Link to='/dashboard?tab=profile'>
             <Sidebar.Item
               active={tab === 'profile'}
@@ -82,18 +95,8 @@ export default function DashSidebar() {
               Profile
             </Sidebar.Item>
           </Link>
-          {currentUser.message && !currentUser.message.isAdmin && (
-            <Link to='/dashboard?tab=posts'>
-              <Sidebar.Item
-                active={tab === 'posts'}
-                icon={HiChartPie}
-                as='div'
-              >
-                Dashboard
-              </Sidebar.Item>
-            </Link>
-          )}
-          {currentUser.message && !currentUser.message.isAdmin && (
+          
+          {/* {currentUser.message && !currentUser.message.isAdmin && (
             <Link to='/dashboard?tab=plan'>
               <Sidebar.Item
                 active={tab === 'plan'}
@@ -103,9 +106,9 @@ export default function DashSidebar() {
                 Plan
               </Sidebar.Item>
             </Link>
-          )}
+          )} */}
 
-          {currentUser.message.isAdmin && (
+          {currentUser.message.isAdmin && currentUser.message.role == 'pharmacy' && (
             <Link to='/dashboard?tab=medicine'>
               <Sidebar.Item
                 active={tab === 'posts'}
@@ -116,7 +119,7 @@ export default function DashSidebar() {
               </Sidebar.Item>
             </Link>
           )}
-          {currentUser.message && (
+          {currentUser && (
             <>
               <Link to='/dashboard?tab=location'>
                 <Sidebar.Item
@@ -129,7 +132,7 @@ export default function DashSidebar() {
               </Link>
             </>
           )}
-          {currentUser.message && !currentUser.message.isAdmin && (
+          {currentUser && !currentUser.isAdmin && (
             <>
               <Link to='/dashboard?tab=search'>
                 <Sidebar.Item

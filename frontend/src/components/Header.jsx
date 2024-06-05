@@ -1,6 +1,6 @@
-import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
+import { Avatar, Button, Dropdown, Navbar} from 'flowbite-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AiOutlineSearch } from 'react-icons/ai';
+// import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
@@ -26,8 +26,11 @@ export default function Header() {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch('/api/user/signout', {
+      console.log(currentUser.message)
+      const res = await fetch('http://localhost:5000/api/user/logout', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentUser.message),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -40,13 +43,13 @@ export default function Header() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set('searchTerm', searchTerm);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const urlParams = new URLSearchParams(location.search);
+  //   urlParams.set('searchTerm', searchTerm);
+  //   const searchQuery = urlParams.toString();
+  //   navigate(`/search?${searchQuery}`);
+  // };
 
   return (
     <Navbar className='border-b-2 bg-red-500'>
@@ -58,7 +61,7 @@ export default function Header() {
           MedLocator <span className='text-red-500'><b></b></span>
         </span>
       </Link>
-      <form onSubmit={handleSubmit}>
+      {/* <form onSubmit={handleSubmit}>
         <TextInput
           type='text'
           placeholder='Search...'
@@ -70,7 +73,7 @@ export default function Header() {
       </form>
       <Button className='w-12 h-10 lg:hidden' color='gray' pill>
         <AiOutlineSearch />
-      </Button>
+      </Button> */}
       <div className='flex gap-2 md:order-2'>
         <button
           className='w-12 h-10 hidden sm:inline bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white hover:from-purple-500 hover:via-pink-600 hover:to-red-600 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg transition duration-300 ease-in-out transform hover:scale-105 rounded-full'
@@ -85,13 +88,13 @@ export default function Header() {
             arrowIcon={false}
             inline
             label={
-              <Avatar alt='user' img={currentUser.profilePicture} rounded />
+              <Avatar alt='user' rounded />
             }
           >
             <Dropdown.Header>
-              <span className='block text-sm'>@{currentUser.username}</span>
+              <span className='block text-sm'>@{currentUser.message.name}</span>
               <span className='block text-sm font-medium truncate'>
-                {currentUser.email}
+                {currentUser.message.email}
               </span>
             </Dropdown.Header>
             <Link to={'/dashboard?tab=profile'}>
@@ -125,6 +128,11 @@ export default function Header() {
         </Navbar.Link> */}
       </Navbar.Collapse>
     </Navbar>
+
+
+
+
+
 
 
     // <Navbar fluid rounded>

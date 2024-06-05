@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const MapComponent = ({ setLocation }) => {
-  const [position, setPosition] = useState({lat: 13.487177181316815, lng: 39.46855545043946});
+const MapComponent = ({ setLocation, location = {lat: 31.11 , lng: 12.11} }) => {
+  const [position, setPosition] = useState({lat: location.lat, lng: location.lng});
 
   const LocationMarker = () => {
     const map = useMapEvents({
