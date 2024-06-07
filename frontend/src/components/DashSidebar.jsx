@@ -96,6 +96,22 @@ export default function DashSidebar() {
               Profile
             </Sidebar.Item>
           </Link>
+          {
+            currentUser.message.isAdmin == 1 && (
+              <Link to='/dashboard?tab=admin'>
+              <Sidebar.Item
+                active={tab === 'profile'}
+                icon={HiUser}
+                // label={currentUser.message.isAdmin ? 'Admin' : 'User'}
+                labelColor='dark'
+                as='div'
+              >
+                Users
+              </Sidebar.Item>
+            </Link>
+            )}
+
+          
           
           {/* {currentUser.message && !currentUser.message.isAdmin && (
             <Link to='/dashboard?tab=plan'>

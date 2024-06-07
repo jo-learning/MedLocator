@@ -22,9 +22,16 @@ def sync():
     }
     
     email = User.check_user(params['email'])
+    name = User.check_user_by_name(params['name'])
     print(email)
     if email:
-        return jsonify({'message': 'email allready registed'})
+        response = jsonify({'message': 'email allready registed'})
+        response.status_code = 400
+        return response
+    elif name:
+        response = jsonify({'message': 'name allready exist'})
+        response.status_code = 400
+        return response
     User.add_user(user)
     return jsonify({'message': 'OK'})
 
@@ -82,6 +89,35 @@ def syncprofileput():
         return jsonify({'message': 'updated successfully'})
     return jsonify({'message': 'some params are missing'})
 
+@user_api.route('/user/getuser', methods=['POST'])
+def syncUser():
+    params = assert_data_has_keys(request, {'token'})
+    token = User.check_token(params['token'])
+    # print(token)
+    user = User.from_id(token)
+    print(user.isAdmin[0])
+    if user.isAdmin[0] == 1:
+        medicines = User.get_user()
+    # print(medicines)
+        return jsonify(medicines)
+    return jsonify({'message': 'you are not allowed'})
+
+
+@user_api.route('/user/updateuser', methods=['POST'])
+def syncUpdateuser():
+    params = assert_data_has_keys(request, {'token', 'verified'})
+    user_id = User.check_token(params['token'])
+    user = User.from_id(user_id)
+    valid = False
+    if user.isAdmin[0] == 1:
+        valid = User.update_user_verified(params['id'], params['verified'])
+    if valid == True:
+        return jsonify({'message': 'successfully updated'})
+    else:
+        return jsonify({'message': 'something wrong try again'})
+
+
+
 @user_api.route('/user/logout', methods=['POST'])
 def synclogout():
     params = assert_data_has_keys(request, {'token'})
@@ -126,7 +162,7 @@ def syncMedicine():
 
 @user_api.route('/medicine/addmedicine', methods=['POST'])
 def syncAddMedicine():
-    params = assert_data_has_keys(request, {'token'})
+    params = assert_data_has_keys(request, {'token', 'totalnumber', 'price', 'medicine'})
     token = User.check_token(params['token'])
     user = User.from_id(token)
     if (user.role == 'pharmacy'):
@@ -166,16 +202,16 @@ def syncAddSave():
     if user.role == 'user':
         add = User.add_save(params['email'], params['medicine_name'], params['pharmacy_name'], params['latitude'], params['longitude'])
         if add == True:
-            return jsonify({'message': 'successfully added'})
+            return jsonify({'message': 'successfully added', 'status': 200})
         else: 
-            return jsonify({'message': 'something wrong try again'})
+            return jsonify({'message': 'something wrong try again', 'status': 300})
     return jsonify({'message': 'you aren\'t allowed to add'})
 @user_api.route('/save/getSave', methods=['POST'])
 def syncgetSave():
     params = assert_data_has_keys(request, {'token', 'email'})
     user_id = User.check_token(params['token'])
     user = User.from_id(user_id)
-    if user.role == 'pharmacy':
+    if user.role == 'user':
         saved = User.get_save(params['email'])
         return jsonify(saved)
         

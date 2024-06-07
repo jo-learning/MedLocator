@@ -98,6 +98,7 @@ export default function DashRecieved() {
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data);
+          console.log(data)
           if (data.length < 9) {
             setShowMore(false);
           }
@@ -159,20 +160,26 @@ export default function DashRecieved() {
         <Button className='bg-red-500 right-0' onClick={() => (setDetail(true))}><HiDocumentAdd className='w-6 h-6' /> add medicine</Button>
         </div> */}
         
-          <table>
-            <thead className='bg-white border-blue-400 border-solid rounded'>
-              <th>Name</th>
-              <th>Pharmacy Name</th>
-              <th>Map</th>
-            </thead>
-              {userPosts.map((post, index) => (
-                <tbody key={post._id}>
-                  
-                    <td className='px-6'>{post[0]}</td>
-                    <td className='px-6'>{post[1]}</td>
-                    {/* <td className='px-6'>{post.updatedAt}</td> */}
-                    <td>
-                    <span
+
+
+
+        <Table hoverable className='shadow-md'>
+            <Table.Head>
+              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Pharmacy Name</Table.HeadCell>
+              <Table.HeadCell>Map</Table.HeadCell>
+            </Table.Head>
+            {userPosts.map((user, index) => (
+              <Table.Body className='divide-y'>
+                <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+                  <Table.Cell>
+                    {user[0]}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {user[0]}
+                  </Table.Cell>
+                  <Table.Cell>
+                  <span
                       onClick={() => {
                         setShowModal(true);
                         setPostIndex(index);
@@ -181,12 +188,11 @@ export default function DashRecieved() {
                     >
                       Map
                     </span>
-                    </td>
-                </tbody>
-              ))}
-            
-            
-          </table>
+                  </Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            ))}
+          </Table>
           
           {showMore && (
             <button

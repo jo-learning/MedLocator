@@ -22,14 +22,23 @@ const MapComponent3 = ({pharmacy_postion}) => {
   const position2 = pharmacy_postion; // Los Angeles
 
   console.log(position1)
+
+  const redIcon = new L.Icon({
+    iconUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIyMSIgdmlld0JveD0iMCAwIDE0IDIxIj4KICA8cGF0aCBkPSJNNyAwQzIuOCAwIDAgMy4yIDAgNy41YzAgNi41IDcgMTMuNSA3IDEzLjVzNy03IDctMTMuNUMxNCAzLjIgMTEuMiAwIDcgMHptMCA5LjJhMi4yIDIuMiAwIDEgMSAwLTQuNCAyLjIgMi4yIDAgMCAxIDAgNC40eiIgZmlsbD0iI2ZmMDAwMCIvPgo8L3N2Zz4=', // SVG data URL for red marker
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
   return (
-    <MapContainer center={position1} zoom={4} style={{ height: "100vh", width: "100%" }}>
+    <MapContainer center={position1} zoom={4} style={{ height: "300px", width: "100%" }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <Marker position={position1} />
-      <Marker position={position2} />
+      <Marker position={position2} icon={redIcon}/>
       <Polyline positions={[position1, position2]} color="blue" />
     </MapContainer>
   );

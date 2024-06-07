@@ -81,6 +81,12 @@ def check_user(email):
             cur.execute('SELECT email FROM users WHERE email = %s', [email])
             row = cur.fetchone()
             return row
+def check_user_by_name(name):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT email FROM users WHERE name = %s', [name])
+            row = cur.fetchone()
+            return row
 
 
 def create_token(user_id):
@@ -156,6 +162,19 @@ def get_medicine_by_pharmacy_id(pharmacy_id):
             cur.execute('SELECT med.id, m.name, med.totalnumber, med.price FROM medicines AS med JOIN medicine AS m ON med.medicine_id = m.id WHERE med.pharmacy_id = %s ', [pharmacy_id])
             results = cur.fetchall()
             return results
+def get_user():
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT id, name, email, verified FROM users WHERE role = %s ', ['pharmacy'])
+            results = cur.fetchall()
+            return results
+
+def update_user_by_id(id, verified):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('UPDATE users SET verified = %s WHERE id = %s', [verified, id])
+            conn.commit()
+
 
 def add_medicine_by_pharmacy_id(user, totalnumber, price, medicine):
     with get_connection() as conn:

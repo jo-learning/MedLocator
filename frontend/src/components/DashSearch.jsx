@@ -1,4 +1,4 @@
-import { TextInput, Modal, Button } from "flowbite-react";
+import { TextInput, Modal, Button, Spinner } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
 import MapComponent from "./Map";
@@ -7,15 +7,45 @@ import { useSelector } from "react-redux";
 import { HiDocumentText, HiOutlineUserGroup, HiArrowNarrowUp, HiAnnotation, HiArrowNarrowDown } from "react-icons/hi";
 import MapComponent3 from "./Map3";
 import { API } from '../components/API';
+import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+import PopupModal from "./PopUp";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 // import { current } from "@reduxjs/toolkit";
 
 export default function DashSearch(){
-    const { currentUser } = useSelector((state) => state.user)
+    const { currentUser} = useSelector((state) => state.user)
+    const [loading, setLoading] = useState(false)
     const [searchTerm, setSearchTerm] = useState()
     const [detail, setDetail] = useState(false)
     const [number, setNumber] = useState(0)
     var loc = {lat: null, lng: null}
     const [medicine, setMedicine] = useState([]);
+    const [popup, setPopUp] = useState({
+      shows: null,
+      message: null,
+      statusCode: null
+    })
+    const showToast = (message, type) => {
+      // console.log("showing Toast")
+      switch(type){
+          case 'success':
+              toast.success(message)
+              break;
+          case 'error':
+              toast.error(message)
+              break;
+          case 'info':
+              toast.info(message)
+              break;
+          case 'warning':
+              toast.warning(message)
+              break;
+          default:
+              toast(message)
+              break;
+      }
+    }
     // const medicines = [
     //     {
     //         name: "parasintamol",
@@ -69,7 +99,9 @@ export default function DashSearch(){
               console.log(data.message);
             } else {
               // dispatch(updateSuccess(data));
-              console.log(data)
+              // console.log(data)
+              // console.log(data.status)
+              showToast('successfully added', 'success');
               // setMedicine(data)
             }
       } catch (error) {
@@ -78,6 +110,7 @@ export default function DashSearch(){
     }
     const handleSubmit =  async(e) => {
       try {
+        setLoading(true);
         e.preventDefault();
         console.log(searchTerm)
         const res = await fetch(`${API}/api/medicine/search`, {
@@ -88,26 +121,41 @@ export default function DashSearch(){
             const data = await res.json();
             if (!res.ok) {
               console.log(data.message);
+              setLoading(false);
             } else {
               // dispatch(updateSuccess(data));
               console.log(data)
               setMedicine(data)
+              setLoading(false)
             }
       } catch (error) {
-        
       }
     }
     return(
         <div className="justify-center items-center">
         <form onSubmit={handleSubmit} className="items-center justify-center flex">
-        <TextInput
-          type='text'
-          placeholder='Search...'
-          rightIcon={AiOutlineSearch}
-          className='lg:w-[250px] '
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+          {!loading ? (
+            <TextInput
+            type='text'
+            placeholder='Search...'
+            rightIcon={AiOutlineSearch}
+            className='lg:w-[250px] '
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          ):
+          (
+            <TextInput
+            type='text'
+            placeholder='Search...'
+            rightIcon={Spinner}
+            className='lg:w-[250px] '
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          )
+          }
+        
       </form>
       <div>
       <div className='flex-wrap flex gap-4 justify-center'>
@@ -179,14 +227,18 @@ export default function DashSearch(){
         </div> */}
       </div>
       </div>
-      <Modal
+      {
+        medicine[number] && (
+          <Modal
         show={detail}
         position='center'
         onClose={() => setDetail(false)}
-        className='lg:my-[100px] lg:mx-[300px] bg-black'
+        className='lg:my-[100px] lg:mx-[300px] pb-20 bg-black'
       >
-        <Modal.Header>Small modal</Modal.Header>
+        <Modal.Header>Medicine Name:  {medicine[number][0]}</Modal.Header>
         <Modal.Body>
+          <h1> <b>Distance:</b>  {medicine[number][4]} km</h1>
+          <h1> <b>Price</b>  {medicine[number][4]} km</h1>
           {/* <MapComponent2 loc={medicine[number]}/> */}
           {medicine[number] && (
           <MapComponent3 pharmacy_postion={[medicine[number][1], medicine[number][2] ]} />
@@ -196,6 +248,7 @@ export default function DashSearch(){
           <Button onClick={() => {
             
             handleSave()
+            setDetail(false)
             // setDetail(false)
           }} className="bg-green-500">Save</Button>
           <Button color="gray" onClick={() => setDetail(false)}>
@@ -203,6 +256,11 @@ export default function DashSearch(){
           </Button>
         </Modal.Footer>
       </Modal>
+        )
+      }
+      <ToastContainer />
+      
+      
         </div>
     );
 }

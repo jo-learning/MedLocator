@@ -59,6 +59,8 @@ class User:
     def add_user(user):
         # user = {name: name, role: role, email: email, location: location, password: password}
         return db.add_user(user)
+    def check_user_by_name(name):
+        return db.check_user_by_name(name)
     def update_user(user, password=None):
         return db.update_user(user, password)
     def check_user(email):
@@ -70,6 +72,12 @@ class User:
     def search_term(user, searchTerm):
         medicine = db.search_location(user.latitude, user.longitude, searchTerm)
         return medicine
+    def get_user():
+        users = db.get_user()
+        return users
+    def update_user_verified(id, verified):
+        db.update_user_by_id(id, verified)
+        return True
     def get_medicine(user):
         medicines = db.get_medicine_by_pharmacy_id(user)
         return medicines

@@ -22,7 +22,7 @@ export default function HomeComponent () {
     <section id="about" className="py-12 bg-white">
         <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">About MedLocator</h2>
-            <p className="text-lg mx-[250px]">MedLocator is your go-to solution for finding the nearest pharmacies that stock the medicine you need. Our easy-to-use platform ensures that you get the right medicine at the right time without any hassle.</p>
+            <p className="text-lg lg:mx-[250px]">MedLocator is your go-to solution for finding the nearest pharmacies that stock the medicine you need. Our easy-to-use platform ensures that you get the right medicine at the right time without any hassle.</p>
         </div>
     </section>
 

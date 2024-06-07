@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { HiDocumentAdd, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { API } from '../components/API';
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 
 // import { set } from 'mongoose';
@@ -18,28 +20,7 @@ export default function DashMedicine() {
   //     isAdmin: true
   // }
   // const [userPosts, setUserPosts] = useState([]);
-  const userPosts = [{
-    updatedAt: "24-20-2014",
-    category: "post",
-    _id: 2,
-    title: "abcd"
-
-  },
-  {
-    updatedAt: "24-20-2014",
-    category: "post",
-    _id: 1,
-    title: "abcd"
-
-  },
-  {
-    updatedAt: "24-20-2014",
-    category: "post",
-    _id: 3,
-    title: "abcd"
-
-  }
-]
+  
   const [medicine, setMedicine] = useState([]);
 
   const [showMore, setShowMore] = useState(true);
@@ -52,7 +33,27 @@ export default function DashMedicine() {
   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
   const [editMedicine, setEditMedicine] = useState(false)
-  const [medicineIndex, setMedicineIndex] = useState(0)
+  const [medicineIndex, setMedicineIndex] = useState(0);
+  const showToast = (message, type) => {
+    // console.log("showing Toast")
+    switch(type){
+        case 'success':
+            toast.success(message)
+            break;
+        case 'error':
+            toast.error(message)
+            break;
+        case 'info':
+            toast.info(message)
+            break;
+        case 'warning':
+            toast.warning(message)
+            break;
+        default:
+            toast(message)
+            break;
+    }
+  }
 
 
   const handleChange = (e) => {
@@ -81,7 +82,9 @@ export default function DashMedicine() {
       });
       const data = await res.json();
       if (data.success === false) {
+        showToast(data.message, "error");
         return setErrorMessage(data.message);
+
       }
       setLoading(false);
       if(res.ok) {
@@ -106,13 +109,19 @@ export default function DashMedicine() {
         const data = await res.json();
         if (res.ok) {
           // setUserPosts(data.posts);
+          showToast("successfully added", "success");
           console.log(data)
           if (data.length < 9) {
             setShowMore(false);
           }
         }
+        else{
+          console.log(data)
+          showToast(data.message, "error");
+        }
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
+        showToast("Failed to add", "error");
       }
     };
     fetchPosts();
@@ -143,6 +152,7 @@ export default function DashMedicine() {
           // setUserPosts(data.posts);
           console.log(data)
           setMedicine(data)
+          showToast("successfully added", "success");
           if (data.length < 9) {
             setShowMore(false);
           }
@@ -152,7 +162,11 @@ export default function DashMedicine() {
             setShowMore(false);
           }
         }
+        else{
+          showToast(data.message, "error");
+        }
       } catch (error) {
+        showToast(error.message, "error");
         console.log(error.message);
       }
     };
@@ -181,13 +195,13 @@ export default function DashMedicine() {
         console.log(error.message);
       }
     };
-    if (currentUser.message.isAdmin) {
+    if (currentUser.message.role == 'pharmacy') {
       fetchPosts();
     }
   }, [currentUser.message.id]);
 
   const handleShowMore = async () => {
-    const startIndex = userPosts.length;
+    const startIndex = medicine.length;
     try {
       const res = await fetch(
         `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
@@ -245,56 +259,63 @@ export default function DashMedicine() {
 
   return (
     <div className='mt-20 table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
-      {currentUser.message.isAdmin && medicine.length > 0 ? (
-        <>
-        <div className=' items-end justify-end flex'>
+      <div className=' items-end justify-end flex'>
         <Button className='bg-red-500 right-0' onClick={() => (setDetail(true))}><HiDocumentAdd className='w-6 h-6' /> add medicine</Button>
         </div>
-        
-          <table>
-            <thead className='bg-white border-blue-400 border-solid rounded'>
-              <th>name</th>
-              <th>total number</th>
-              <th>price</th>
-              <th>delete</th>
-              <th>edit</th>
-            </thead>
-              {medicine.map((post, index) => (
-                <tbody key={post._id}>
-                  
-                    <td className='px-6'>{post[1]}</td>
-                    <td className='px-6'>{post[2]}</td>
-                    <td className='px-6'>{post[3]}</td>
-                    <td>
-                    <span
+      {currentUser.message.role == 'pharmacy' && medicine.length > 0 ? (
+        <>
+
+
+<Table hoverable className='shadow-md'>
+            <Table.Head>
+              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Total Number</Table.HeadCell>
+              <Table.HeadCell>Price</Table.HeadCell>
+              <Table.HeadCell>Delete</Table.HeadCell>
+              <Table.HeadCell>Edit</Table.HeadCell>
+            </Table.Head>
+            {medicine.map((user, index) => (
+              <Table.Body className='divide-y'>
+                <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+                  <Table.Cell>
+                    {user[1]}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {user[2]}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {user[3]}
+                  </Table.Cell>
+                  <Table.Cell>
+                  <span
                       onClick={() => {
                         setShowModal(true);
-                        setMedicineIdToDelete(post[0]);
+                        setMedicineIdToDelete(user[0]);
                         console.log(medicine[medicineIndex][2])
                       }}
                       className='font-medium text-red-500 hover:underline cursor-pointer px-6'
                     >
                       Delete
                     </span>
-                    </td>
-                    <td>
-                    <Link
+                  </Table.Cell>
+                  <Table.Cell>
+                  <Link
                       className='text-teal-500 hover:underline px-6'
                       onClick={() => {
                         setMedicineIndex(index)
-                        setFormMedicine({ ...formMedicine, token: currentUser.message.token, medicine_id: post[0] });
+                        setFormMedicine({ ...formMedicine, token: currentUser.message.token, medicine_id: user[0] });
                         setEditMedicine(true)
 
                       }}
                     >
                       <span>Edit</span>
                     </Link>
-                    </td>
-                </tbody>
-              ))}
-            
-            
-          </table>
+                  </Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            ))}
+          </Table>
+
           
           {showMore && (
             <button
@@ -506,14 +527,16 @@ export default function DashMedicine() {
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => {
-            setDetail(false)
+            
             handleUpdate()
+            setEditMedicine(false)
           }} className='bg-green-500'>I accept</Button>
-          <Button color="gray" onClick={() => setDetail(false)}>
+          <Button color="gray" onClick={() => setEditMedicine(false)}>
             Decline
           </Button>
         </Modal.Footer>
       </Modal>
+      <ToastContainer />
     </div>
   );
 }

@@ -4,10 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import MapComponent from '../components/Map';
 import { FaCheckCircle } from 'react-icons/fa';
 import { API } from '../components/API';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import OAuth from '../components/OAuth';
 
 export default function SignUp() {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({role: 'user'});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [Check, setCheck] = useState(false);
@@ -21,16 +23,45 @@ export default function SignUp() {
   const [modalPlacement, setModalPlacement] = useState('user')
 
   const navigate = useNavigate();
+
+
+  const showToast = (message, type) => {
+    // console.log("showing Toast")
+    switch(type){
+        case 'success':
+            toast.success(message)
+            break;
+        case 'error':
+            toast.error(message)
+            break;
+        case 'info':
+            toast.info(message)
+            break;
+        case 'warning':
+            toast.warning(message)
+            break;
+        default:
+            toast(message)
+            break;
+    }
+  }
+
+
+
+
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.password || formData.location == null) {
+    setLoading(true);
+    if (!formData.name || !formData.email || !formData.password || formData.longitude == null  || formData.latitude == null) {
+      setLoading(false);
       return setErrorMessage('Please fill out all fields.');
     }
     try {
-      setLoading(true);
+      
       setErrorMessage(null);
       console.log(formData);
       
@@ -46,6 +77,10 @@ export default function SignUp() {
       setLoading(false);
       if(res.ok) {
         navigate('/sign-in');
+      }
+      else{
+        showToast(data.message, "error")
+
       }
     } catch (error) {
       setErrorMessage(error.message);
@@ -146,7 +181,7 @@ export default function SignUp() {
 
             setCheck(true);
             setFormData({ ...formData, longitude: parseInt(location.lng), latitude: location.lat });
-          }}>I accept</Button>
+          }} className='bg-green-500'>I accept</Button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Decline
           </Button>
@@ -183,6 +218,7 @@ export default function SignUp() {
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

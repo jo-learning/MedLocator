@@ -7,6 +7,7 @@ import DashLocation from '../components/DashLocation';
 import Header from '../components/Header';
 import DashSearch from '../components/DashSearch';
 import DashRecieved from '../components/DashRecieved';
+import DashAdmin from '../components/DashAdmin';
 // import DashPosts from '../components/DashPosts';
 // import DashUsers from '../components/DashUsers';
 // import DashComments from '../components/DashComments';
@@ -38,6 +39,7 @@ export default function Dashboard() {
       {tab === 'location' && <DashLocation />}
       {tab === 'search' && <DashSearch />}
       {tab === 'recieved' && <DashRecieved />}
+      {tab === 'admin' && <DashAdmin />}
     </div>
     </>
     
