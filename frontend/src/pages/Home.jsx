@@ -14,11 +14,6 @@ export default function Home () {
         <>
             <HomeComponent />
             
-            <div className='h-8'></div>
-            <div className='flex justify-center items-center'>
-            <MapComponent setLocation={setLocation}/>
-            </div>
-            <div className='h-8'></div>
 
         </>
     );
