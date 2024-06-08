@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2024 at 12:22 AM
+-- Generation Time: Jun 08, 2024 at 07:10 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -80,7 +80,9 @@ INSERT INTO `medicines` (`id`, `pharmacy_id`, `medicine_id`, `totalnumber`, `pri
 (8, 13, 12, 0, 0),
 (12, 12, 11, 2, 5),
 (13, 12, 2, 11, 111),
-(14, 12, 4, 10, 11.2);
+(14, 12, 4, 10, 11.2),
+(15, 14, 3, 18, 32),
+(16, 14, 3, 12, 14);
 
 -- --------------------------------------------------------
 
@@ -102,7 +104,17 @@ CREATE TABLE `requestmedicine` (
 --
 
 INSERT INTO `requestmedicine` (`id`, `email`, `medicine_name`, `pharmacy_name`, `latitude`, `longitude`) VALUES
-(1, 'yohannesguesh01@gmail.com', 'Paracetamol', 'yohannes', 13.4951, 39.4766);
+(1, 'yohannesguesh01@gmail.com', 'Paracetamol', 'yohannes', 13.4951, 39.4766),
+(2, 'yohannesguesh04@gmail.com', 'Paracetamol', 'yohannes24', 22.3221, 34.2223),
+(3, 'yohannesguesh04@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706),
+(4, 'jojojo@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706),
+(5, 'jojojo@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706),
+(6, 'jojojo@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706),
+(7, 'jojojo@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706),
+(8, 'jojojo@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706),
+(9, 'jojojo@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706),
+(10, 'jojojo@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706),
+(11, 'jojojo@gmail.com', 'Paracetamol', 'yohannes', 13.4823, 39.4706);
 
 -- --------------------------------------------------------
 
@@ -144,9 +156,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `role`, `email`, `hashed_password`, `location`, `created_at`, `updated_at`, `verified`, `isAdmin`, `pharmacy`, `longitude`, `latitude`) VALUES
-(12, 'yohannes', 'pharmacy', 'yohannesguesh01@gmail.com', '$2b$12$tiIk4t9FEsQ9wlvZUlRL1OpWBAU4o3M0hWr1kne4aOLCVQxBbV1PC', '34.22122 44.24233', '2024-05-31 17:38:10', '2024-06-05 21:13:17', 0, 1, 0, 39.4706, 13.4823),
+(12, 'yohannes', 'pharmacy', 'yohannesguesh01@gmail.com', '$2b$12$tiIk4t9FEsQ9wlvZUlRL1OpWBAU4o3M0hWr1kne4aOLCVQxBbV1PC', '34.22122 44.24233', '2024-05-31 17:38:10', '2024-06-06 22:09:02', 1, 1, 0, 39.4706, 13.4823),
 (13, 'yohannes24', 'user', 'yohannesguesh04@gmail.com', '$2b$12$H47Tet8QCLFvF8zgOk/uweGBH0OtyvuHw493/Te4r/HdyMdDN1Wf2', '22.3221 34.22234', '2024-05-31 18:47:03', '2024-06-03 20:35:26', 0, 0, 0, 34.2223, 22.3221),
-(14, 'yohanne4', 'pharmacy', 'yohannes@gmail.com', '$2b$12$9p3REWTQj03D5wPn0qo3M.suhgqXT2D6JhUPqkAxpX0VtK.M1fU5G', '13.46903879602975 39.45087969303132', '2024-06-03 07:48:38', '2024-06-04 21:04:28', 0, 0, 0, 39.4511, 13.4696);
+(14, 'yohanne4', 'pharmacy', 'yohannes@gmail.com', '$2b$12$9p3REWTQj03D5wPn0qo3M.suhgqXT2D6JhUPqkAxpX0VtK.M1fU5G', '13.46903879602975 39.45087969303132', '2024-06-03 07:48:38', '2024-06-06 22:08:54', 1, 0, 0, 39.4511, 13.4696),
+(15, 'jojo', 'user', 'jojojo@gmail.com', '$2b$12$fyT9BTAcWl5HkH2G3QTHHOxvPjfvZUfCD9.UBDInJ/vGVvhLMjEeW', NULL, '2024-06-06 19:15:04', '2024-06-07 15:54:49', 0, 0, 0, 39.5697, 14.1277),
+(17, 'yohannesGuesh', 'pharmacy', 'yohnnesguesh0101@gmail.com', '$2b$12$KXyba4DnS2ZwgViIbqWfiu/dh69eWtmnfNsrw3ASIse/A9DIi1HzS', NULL, '2024-06-07 22:18:35', '2024-06-07 22:18:35', 0, 0, 0, 39, 13.4898);
 
 --
 -- Indexes for dumped tables
@@ -183,7 +197,8 @@ ALTER TABLE `tokens`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `uc_name` (`name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -193,25 +208,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `medicines`
 --
 ALTER TABLE `medicines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `requestmedicine`
 --
 ALTER TABLE `requestmedicine`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tokens`
 --
 ALTER TABLE `tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
