@@ -16,9 +16,16 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-const MapComponent3 = ({pharmacy_postion}) => {
+const MapComponent3 = ({tracker, pharmacy_postion}) => {
     const { currentUser } = useSelector((state) => state.user);
-  const position1 = [currentUser.message.latitude, currentUser.message.longitude]; // New York City
+    let position1 = [];
+    if (tracker.lat == null){
+      position1 = [currentUser.message.latitude, currentUser.message.longitude]; // New York City
+    }
+    else{
+      position1 = [tracker.lat, tracker.lng]
+    }
+  
   const position2 = pharmacy_postion; // Los Angeles
 
   console.log(position1)

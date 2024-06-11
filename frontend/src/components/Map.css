@@ -1,0 +1,4 @@
+.leaflet-routing-alternatives-container {
+    display: none !important;
+    /* This will completely hide the steps */
+}

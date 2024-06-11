@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { HiDocumentAdd, HiOutlineExclamationCircle } from 'react-icons/hi';
 import MapComponent3 from './Map3';
 import { API } from '../components/API';
+import GeolocationTracker from './Tracker';
+import LeafletMap from './Map4';
 
 
 // import { set } from 'mongoose';
@@ -46,6 +48,8 @@ export default function DashRecieved() {
 //   const [detail, setDetail] = useState(false);
   const [postIndex, setPostIndex] = useState(0);
   const [formData, setFormData] = useState({});
+  const [location, setLocation] = useState({lat: null, lng: null})
+  const [show, setShow] = useState(false);
 //   const [loading, setLoading] = useState(false);
 //   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
@@ -217,8 +221,30 @@ export default function DashRecieved() {
           <div className='text-center'>
             {/* <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' /> */}
             {
-              userPosts[postIndex] && (
-            <MapComponent3 pharmacy_postion={[userPosts[postIndex][2], userPosts[postIndex][3]]}/>
+              
+              userPosts[postIndex] &&(
+                <div>
+                  {
+                    show === true && (
+                      <GeolocationTracker setLocations={setLocation}/>
+                    )
+                  }
+                    
+                    {/* <MapComponent3 tracker={location} pharmacy_postion={[userPosts[postIndex][2], userPosts[postIndex][3]]}/> */}
+                    {
+                      location.lat == null && (
+                    <LeafletMap  locations={[{lat: currentUser.message.latitude, lng: currentUser.message.longitude, color: 'default'}, {lat:userPosts[postIndex][2], lng: userPosts[postIndex][3], color: 'red'}]}  />
+                        
+                      )
+                    }
+                    {
+                      location.lat != null && (
+                      <LeafletMap  locations={[location, {lat:userPosts[postIndex][2], lng: userPosts[postIndex][3], color: 'red'}]}  />
+
+                      )
+                    }
+                </div>
+                
 
               )
             }
@@ -232,6 +258,25 @@ export default function DashRecieved() {
             </div> */}
           </div>
         </Modal.Body>
+        <Modal.Footer>
+          {
+            show == false && (
+              <div className='flex'>
+                <Button className='bg-green-500 mr-4' onClick={() => (setShow(true))}>Start Tracker</Button>
+                <Button className='bg-gray-500' disabled>Stop Tracker</Button>
+              </div>
+            )
+          }
+          {
+            show == true && (
+              <div className='flex'>
+                <Button className='bg-gray-500 mr-4' disabled >Start Tracker</Button>
+                <Button className='bg-red-500' onClick={() => (setShow(false))}>Stop Tracker</Button>
+              </div>
+            )
+          }
+          
+        </Modal.Footer>
       </Modal>
     </div>
   );
