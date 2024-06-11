@@ -1,0 +1,6 @@
+Flask
+Flask-Cors
+bcrypt
+requests
+mysql-connector
+uuid

@@ -1,5 +1,68 @@
 # MedLocator
-# MedLocator MVP specification:
+MedLocator is your go-to solution for finding the nearest pharmacies that stock the medicine you need. Our easy-to-use platform ensures that you get the right medicine at the right time without any hassle.
+# Get started locally:
+
+Clone the project
+
+```bash
+  git clone git@github.com:jo-learning/MedLocator.git
+```
+
+Go to the project directory
+
+```bash
+  cd MedLocator
+```
+### For FrontEnd
+
+Go to the project frontend
+```bash
+  cd frontend
+```
+Install dependencies
+
+```bash
+  npm install
+```
+start frontend
+
+```bash
+  npm run dev
+```
+
+
+### For Backend
+
+```bash
+  cd backend
+```
+Create a new virtual environment to avoid conflicts and global polution of your system
+
+```bash
+  python3 -m venv /path/to/new/virtual/environment
+```
+
+Activate your virtual environment
+
+```bash
+  source <venv>/bin/activate
+
+  # if windows use the following:
+  # <venv>\Scripts\activate.bat
+```
+
+Install the requirements from the the `requirements.txt` file
+
+```bash
+  pip3 install -r requirements.txt
+```
+
+Start the server
+```bash
+  python app.py
+```
+
+
 ## Architecture
 
 ### APIs and Methods
