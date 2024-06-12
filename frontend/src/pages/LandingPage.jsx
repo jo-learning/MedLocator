@@ -1,5 +1,3 @@
-// import Header from '../components/Header'
-// import Footer from '../components/Footer'
 import HomeComponent1 from '../components/HomeComponent1';
 import React from 'react'
 import MapComponent from '../components/Map';

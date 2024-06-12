@@ -151,11 +151,6 @@ export default function SignUp() {
             
               
             
-            {/* <Button onClick={()=>{setShowPopup(true)}} className='ml-1 text-start bg-red-600'>
-              Subscription
-            </Button> */}
-            {/* {showPopup && <SubscriptionPopup onClose={() => setShowPopup(false)} />} */}
-            {/* <SubscriptionPopup /> */}
             <Button
             className='bg-red-500'
             onClick={() => {setOpenModal(true)}}
@@ -203,7 +198,6 @@ export default function SignUp() {
                 'Sign Up'
               )}
             </Button>
-            {/* <OAuth /> */}
           </form>
           <div className='flex gap-2 text-sm mt-5'>
             <span>Have an account?</span>
